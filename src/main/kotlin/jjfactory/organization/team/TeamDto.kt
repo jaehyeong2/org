@@ -1,0 +1,20 @@
+package jjfactory.organization.team
+
+class TeamDto {
+    data class CreateRequest(
+        val name: String,
+        val parentId: Long,
+        val organizationId: Long,
+    ){
+        fun toEntity(): Team {
+            return Team(
+                name = name,
+                organizationId = organizationId,
+            )
+        }
+    }
+
+    data class UpdateRequest(
+        val name: String,
+    )
+}

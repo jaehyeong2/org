@@ -14,7 +14,7 @@ class Team(
     val id: Long? = null,
 
     var name: String,
-    var parentId: Long,
+    var parentId: Long? = null,
     val organizationId: Long,
 
     @CreationTimestamp
@@ -22,4 +22,8 @@ class Team(
     @UpdateTimestamp
     val updateDt: LocalDateTime? = null,
 ) {
+
+    fun update(name: String){
+        this.name = name
+    }
 }
