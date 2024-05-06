@@ -23,4 +23,8 @@ class Feedback(
     @UpdateTimestamp
     val updateDt: LocalDateTime? = null,
 ) {
+
+    fun modify(content: String){
+        this.content = content
+    }
 }
