@@ -1,10 +1,13 @@
 package jjfactory.organization.organization.team
 
+import jjfactory.organization.exception.AccessDeniedException
+import jjfactory.organization.user.Role
 import jjfactory.organization.user.UserRepository
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import kotlin.math.log
 
 @Transactional
 @Service
@@ -13,11 +16,24 @@ class TeamServiceImpl(
     private val userRepository: UserRepository,
     private val teamUserRepository: TeamUserRepository
 ) : TeamService {
-    override fun createTeam(request: TeamDto.CreateRequest): Long {
+    override fun createTeam(loginUserId: Long, request: TeamDto.CreateRequest): Long {
+        validateAdminRole(loginUserId)
         return teamRepository.save(request.toEntity()).id!!
     }
 
-    override fun delete(id: Long) {
+    override fun deleteUserFromTeam(loginUserId: Long, userId: Long, teamId: Long){
+        validateAdminRole(loginUserId)
+        teamUserRepository.deleteByUserIdAndTeamId(userId, teamId)
+    }
+
+    private fun validateAdminRole(loginUserId: Long) {
+        val loginUser = userRepository.findByIdOrNull(loginUserId) ?: throw NotFoundException()
+        if (loginUser.role != Role.ADMIN) throw AccessDeniedException()
+    }
+
+    override fun deleteTeam(loginUserId: Long, id: Long) {
+        validateAdminRole(loginUserId)
+
         val team = teamRepository.findByIdOrNull(id) ?: throw NotFoundException()
         val teamUsers = teamUserRepository.findAllByTeamId(teamId = team.id!!)
 
@@ -29,7 +45,9 @@ class TeamServiceImpl(
         teamRepository.deleteById(id)
     }
 
-    override fun addUsersToTeam(requests: List<TeamDto.AddUserRequest>, teamId: Long){
+    override fun addUsersToTeam(loginUserId: Long, requests: List<TeamDto.AddUserRequest>, teamId: Long){
+        validateAdminRole(loginUserId)
+
         val team = teamRepository.findByIdOrNull(teamId) ?: throw NotFoundException()
 
         requests.forEach {
@@ -45,7 +63,9 @@ class TeamServiceImpl(
         }
     }
 
-    override fun update(id: Long, request: TeamDto.UpdateRequest): Long {
+    override fun update(loginUserId: Long, id: Long, request: TeamDto.UpdateRequest): Long {
+        validateAdminRole(loginUserId)
+
         val team = teamRepository.findByIdOrNull(id) ?: throw NotFoundException()
 
         team.update(request.name)

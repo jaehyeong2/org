@@ -4,7 +4,6 @@ import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import jjfactory.organization.feedback.FeedbackDto
 import jjfactory.organization.user.UserRepository
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Assertions.*
@@ -46,7 +45,7 @@ class TeamServiceImplTest(
             listOf(teamUser)
 
         Assertions.assertThatThrownBy{
-            teamService.delete(2L)
+            teamService.deleteTeam(2L)
 
         }.isInstanceOf(IllegalArgumentException::class.java)
     }
