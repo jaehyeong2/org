@@ -1,0 +1,23 @@
+server:
+  port: 8094
+
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    url: jdbc:postgresql://localhost:5432/org_local
+    username: org_local
+    password: org_local
+
+
+application:
+  Environment: local
+
+security:
+  jwt:
+    token:
+      secret-key: test1test2test3FMETR9bzr4D79QUgeG7zujVfLRxcSrY6KHuhTVY4gZjAbCepNpAxJ46Vec5C4VQfSuH5HfYdX95PNzhYSrjFdbAq4vHDKhe3SEB7kMhgs4uAtest1
+
+  aes-128:
+    key: 1dasdasdas23456789dasdasdas10111213dasdassadadaa

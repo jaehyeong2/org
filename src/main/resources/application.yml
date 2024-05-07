@@ -1,1 +1,21 @@
-spring.application.name=organization
+spring:
+  profiles:
+    group:
+      production:
+        - production
+      develop:
+        - develop
+      local:
+        - local
+      default: local
+  datasource:
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
