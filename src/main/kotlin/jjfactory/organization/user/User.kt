@@ -19,7 +19,7 @@ class User(
     var email: String,
     var phone: String,
 
-    var role: Role,
+    var role: Role = Role.NORMAL,
 
     @CreationTimestamp
     val createDt: LocalDateTime? = null,

@@ -1,5 +1,6 @@
 package jjfactory.organization.feedback
 
+import jjfactory.organization.exception.AccessDeniedException
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -18,8 +19,7 @@ class FeedbackServiceImpl(
     override fun update(loginUserId: Long, feedbackId: Long, request: FeedbackDto.Update): Long {
         val feedback = feedbackRepository.findByIdOrNull(feedbackId) ?: throw NotFoundException()
 
-        //fixme 익셉션 다른거로 수정
-        if (feedback.sendUserId != loginUserId) throw IllegalArgumentException("권한이 없습니다")
+        if (feedback.sendUserId != loginUserId) throw AccessDeniedException()
 
         feedback.modify(request.content)
 

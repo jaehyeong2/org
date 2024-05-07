@@ -38,7 +38,6 @@ class TeamServiceImpl(
         val teamUsers = teamUserRepository.findAllByTeamId(teamId = team.id!!)
 
         if (teamUsers.isNotEmpty()){
-            //FIXME 익셉션 타입변경
             throw IllegalArgumentException("조직원이 존재하는 팀은 삭제 불가")
         }
 
