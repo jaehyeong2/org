@@ -17,4 +17,9 @@ class TeamDto {
     data class UpdateRequest(
         val name: String,
     )
+
+    data class AddUserRequest(
+        val userId: Long,
+        val position: String
+    )
 }

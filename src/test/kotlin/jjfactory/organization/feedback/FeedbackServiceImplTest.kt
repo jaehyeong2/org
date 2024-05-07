@@ -8,10 +8,6 @@ import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.InjectMocks
-import org.mockito.Mock
-import org.mockito.junit.jupiter.MockitoExtension
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException
 import org.springframework.data.repository.findByIdOrNull
 
 @ExtendWith(MockKExtension::class)
@@ -35,7 +31,7 @@ class FeedbackServiceImplTest(
                 content = ""
             )
 
-        Assertions.assertThatThrownBy{
+        Assertions.assertThatThrownBy {
             feedbackService.update(
                 loginUserId = 2L,
                 feedbackId = feedbackId,
