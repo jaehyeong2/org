@@ -1,4 +1,4 @@
-package jjfactory.organization.team
+package jjfactory.organization.organization.team
 
 class TeamDto {
     data class CreateRequest(

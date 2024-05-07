@@ -1,4 +1,4 @@
-package jjfactory.organization.team
+package jjfactory.organization.organization.team
 
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue

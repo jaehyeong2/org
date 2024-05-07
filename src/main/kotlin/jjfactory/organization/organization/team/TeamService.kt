@@ -1,4 +1,4 @@
-package jjfactory.organization.team
+package jjfactory.organization.organization.team
 
 interface TeamService {
     fun createTeam(request: TeamDto.CreateRequest): Long

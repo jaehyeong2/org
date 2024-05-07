@@ -1,4 +1,4 @@
-package jjfactory.organization.team
+package jjfactory.organization.organization.team
 
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException
 import org.springframework.data.repository.findByIdOrNull
