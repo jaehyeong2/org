@@ -1,4 +1,6 @@
-package jjfactory.organization.review
+package jjfactory.organization.review.meta
+
+import jjfactory.organization.review.meta.ReviewMetaDto
 
 interface ReviewMetaService {
     fun createMeta(request: ReviewMetaDto.CreateRequest): Long

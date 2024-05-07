@@ -1,5 +1,6 @@
-package jjfactory.organization.review
+package jjfactory.organization.review.meta
 
+import jjfactory.organization.review.ReviewType
 import java.time.LocalDate
 
 class ReviewMetaDto {

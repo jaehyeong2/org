@@ -1,6 +1,7 @@
-package jjfactory.organization.review
+package jjfactory.organization.review.meta
 
 import jakarta.persistence.*
+import jjfactory.organization.review.ReviewType
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDate

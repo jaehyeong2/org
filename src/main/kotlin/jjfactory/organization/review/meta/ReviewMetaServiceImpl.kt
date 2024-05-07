@@ -1,4 +1,4 @@
-package jjfactory.organization.review
+package jjfactory.organization.review.meta
 
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException
 import org.springframework.data.repository.findByIdOrNull
