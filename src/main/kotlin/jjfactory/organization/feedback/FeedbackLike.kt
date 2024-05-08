@@ -1,0 +1,25 @@
+package jjfactory.organization.feedback
+
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
+import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.UpdateTimestamp
+import java.time.LocalDateTime
+
+@Entity
+class FeedbackLike(
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long? = null,
+
+    val userId: Long,
+    val feedbackId: Long,
+
+    @CreationTimestamp
+    val createdAt: LocalDateTime? = null,
+    @UpdateTimestamp
+    val updatedAt: LocalDateTime? = null,
+) {
+
+}
