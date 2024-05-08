@@ -1,5 +1,7 @@
 package jjfactory.organization.feedback
 
+import java.time.LocalDateTime
+
 class FeedbackDto {
     data class Create(
         val receiveUserId: Long,
@@ -32,4 +34,21 @@ class FeedbackDto {
         val content: String,
     )
 
+}
+
+class FeedbackCommentDto{
+    data class Create(
+        val content: String
+    )
+
+    data class Update(
+        val content: String
+    )
+
+    data class DetailResponse(
+        val id: Long,
+        val content: String,
+        val createdAt: LocalDateTime,
+        val updatedAt: LocalDateTime
+    )
 }

@@ -6,4 +6,6 @@ interface FeedbackService {
     fun getOne(id: Long): FeedbackDto.DetailResponse
     fun getListBySendUserId(id: Long): List<FeedbackDto.ListResponse>
     fun getListByReceiveUserId(id: Long): List<FeedbackDto.ListResponse>
+    fun like(loginUserId: Long, feedbackId: Long): Long
+    fun dislike(loginUserId: Long, feedbackId: Long)
 }

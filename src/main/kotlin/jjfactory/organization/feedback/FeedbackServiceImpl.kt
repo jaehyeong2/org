@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional
 class FeedbackServiceImpl(
     private val feedbackRepository: FeedbackRepository,
+    private val feedbackCommentRepository: FeedbackCommentRepository,
+    private val feedbackLikeRepository: FeedbackLikeRepository
 ) : FeedbackService {
     override fun create(loginUserId: Long, request: FeedbackDto.Create): Long {
         val initEntity = request.toEntity(loginUserId)
@@ -59,6 +61,35 @@ class FeedbackServiceImpl(
                 receiveUserId = it.receiveUserId,
                 content = it.content
             )
+        }
+    }
+
+    override fun like(loginUserId: Long, feedbackId: Long): Long {
+        val feedback = feedbackRepository.findByIdOrNull(feedbackId) ?: throw NotFoundException()
+
+        if (feedback.sendUserId == loginUserId) throw IllegalArgumentException("본인이 작성한 피드백은 좋아요를 누를 수 없습니다.")
+
+        if (feedbackLikeRepository.existsByFeedbackIdAndUserId(
+                feedbackId = feedbackId,
+                userId = loginUserId
+            )) {
+            throw IllegalArgumentException("이미 좋아요를 누른 피드백입니다.")
+        }
+
+        val initLike = FeedbackLike(
+            userId = loginUserId,
+            feedbackId = feedbackId
+        )
+
+        return feedbackLikeRepository.save(initLike).id!!
+    }
+
+    override fun dislike(loginUserId: Long, feedbackId: Long) {
+        feedbackLikeRepository.findByFeedbackIdAndUserId(
+            feedbackId = feedbackId,
+            userId = loginUserId
+        )?.let {
+            feedbackLikeRepository.delete(it)
         }
     }
 }
