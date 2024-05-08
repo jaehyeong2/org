@@ -27,6 +27,7 @@ class ReviewMeta(
     val updatedAt: LocalDateTime? = null,
 ) {
     fun open(){
+        if (endDt.isBefore(LocalDate.now())) throw IllegalArgumentException("종료일 이후에는 공개 할 수 없음")
         isOpen = true
     }
 
