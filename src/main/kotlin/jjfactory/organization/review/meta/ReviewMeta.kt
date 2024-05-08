@@ -13,16 +13,24 @@ class ReviewMeta(
     val id: Long? = null,
 
     val name: String,
-
     var startDt: LocalDate,
     var endDt: LocalDate,
 
     @Enumerated(EnumType.STRING)
     val reviewType: ReviewType,
 
+    var isOpen: Boolean = false,
+
     @CreationTimestamp
     val createdAt: LocalDateTime? = null,
     @UpdateTimestamp
     val updatedAt: LocalDateTime? = null,
 ) {
+    fun open(){
+        isOpen = true
+    }
+
+    fun close(){
+        isOpen = false
+    }
 }

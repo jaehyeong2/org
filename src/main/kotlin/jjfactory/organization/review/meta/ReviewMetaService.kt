@@ -8,4 +8,6 @@ interface ReviewMetaService {
     fun getAllMetaList()
     fun getMeta()
     fun deleteMeta(id: Long)
+    fun open(loginUserId: Long, metaId: Long)
+    fun close(loginUserId: Long, metaId: Long)
 }
