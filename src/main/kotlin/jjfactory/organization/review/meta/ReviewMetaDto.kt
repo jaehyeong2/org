@@ -26,7 +26,15 @@ class ReviewMetaDto {
         var endDt: LocalDate,
     )
 
-    data class Response(
+    data class DetailResponse(
+        val id: Long,
+        val name: String,
+        val startDt: LocalDate,
+        val endDt: LocalDate,
+        val reviewType: ReviewType,
+    )
+
+    data class ListResponse(
         val id: Long,
         val name: String,
         val startDt: LocalDate,

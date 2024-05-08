@@ -1,6 +1,7 @@
 package jjfactory.organization.review.meta
 
 import jjfactory.organization.exception.AccessDeniedException
+import jjfactory.organization.review.ReviewType
 import jjfactory.organization.user.Role
 import jjfactory.organization.user.UserRepository
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException
@@ -24,7 +25,12 @@ class ReviewMetaServiceImpl(
         val meta = reviewMetaRepository.findByIdOrNull(id) ?: throw NotFoundException()
         if (meta.isOpen) throw IllegalArgumentException("open 상태 메타는 삭제/수정 불가능")
 
-        //fixme
+        meta.modify(
+            name = request.name,
+            startDt = request.startDt,
+            endDt = request.endDt
+        )
+
         return meta.id!!
     }
 
@@ -49,13 +55,42 @@ class ReviewMetaServiceImpl(
     }
 
     @Transactional(readOnly = true)
-    override fun getAllMetaList() {
-        TODO("Not yet implemented")
+    override fun getAllMetaList(type: ReviewType?): List<ReviewMetaDto.ListResponse> {
+        //fixme 동적 쿼리
+        type?.let {
+            return reviewMetaRepository.findAllByReviewTypeOrderByCreatedAtDesc(it).map {
+                ReviewMetaDto.ListResponse(
+                    id = it.id!!,
+                    name = it.name,
+                    startDt = it.startDt,
+                    endDt = it.endDt,
+                    reviewType = it.reviewType
+                )
+            }
+        }
+
+        return  reviewMetaRepository.findAllByOrderByCreatedAtDesc().map {
+            ReviewMetaDto.ListResponse(
+                id = it.id!!,
+                name = it.name,
+                startDt = it.startDt,
+                endDt = it.endDt,
+                reviewType = it.reviewType
+            )
+        }
     }
 
     @Transactional(readOnly = true)
-    override fun getMeta() {
-        TODO("Not yet implemented")
+    override fun getMeta(id: Long): ReviewMetaDto.DetailResponse {
+        val meta = reviewMetaRepository.findByIdOrNull(id) ?: throw NotFoundException()
+
+        return ReviewMetaDto.DetailResponse(
+            id = meta.id!!,
+            name = meta.name,
+            startDt = meta.startDt,
+            endDt = meta.endDt,
+            reviewType = meta.reviewType
+        )
     }
 
     private fun validateAdminRole(loginUserId: Long) {

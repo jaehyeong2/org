@@ -12,7 +12,7 @@ class ReviewMeta(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
 
-    val name: String,
+    var name: String,
     var startDt: LocalDate,
     var endDt: LocalDate,
 
@@ -32,5 +32,11 @@ class ReviewMeta(
 
     fun close(){
         isOpen = false
+    }
+
+    fun modify(name: String, startDt: LocalDate, endDt: LocalDate){
+        this.name = name
+        this.startDt = startDt
+        this.endDt = endDt
     }
 }
