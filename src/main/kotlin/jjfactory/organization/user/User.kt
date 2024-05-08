@@ -22,8 +22,8 @@ class User(
     var role: Role = Role.NORMAL,
 
     @CreationTimestamp
-    val createDt: LocalDateTime? = null,
+    val createdAt: LocalDateTime? = null,
     @UpdateTimestamp
-    val updateDt: LocalDateTime? = null,
+    val updatedAt: LocalDateTime? = null,
 ) {
 }

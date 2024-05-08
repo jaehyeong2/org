@@ -40,7 +40,7 @@ class FeedbackServiceImpl(
 
     @Transactional(readOnly = true)
     override fun getListByReceiveUserId(receiveUserId: Long): List<FeedbackDto.ListResponse> {
-        return feedbackRepository.findAllByReceiveUserIdOrderByCreateDtDesc(receiveUserId).map {
+        return feedbackRepository.findAllByReceiveUserIdOrderByCreatedAtDesc(receiveUserId).map {
             FeedbackDto.ListResponse(
                 id = it.id!!,
                 sendUserId = it.sendUserId,
@@ -52,7 +52,7 @@ class FeedbackServiceImpl(
 
     @Transactional(readOnly = true)
     override fun getListBySendUserId(sendUserId: Long): List<FeedbackDto.ListResponse> {
-        return feedbackRepository.findAllBySendUserIdOrderByCreateDtDesc(sendUserId).map {
+        return feedbackRepository.findAllBySendUserIdOrderByCreatedAtDesc(sendUserId).map {
             FeedbackDto.ListResponse(
                 id = it.id!!,
                 sendUserId = it.sendUserId,

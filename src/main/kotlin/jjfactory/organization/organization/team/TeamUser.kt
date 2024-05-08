@@ -21,9 +21,9 @@ class TeamUser(
     val position: String,
 
     @CreationTimestamp
-    val createDt: LocalDateTime? = null,
+    val createdAt: LocalDateTime? = null,
     @UpdateTimestamp
-    val updateDt: LocalDateTime? = null,
+    val updatedAt: LocalDateTime? = null,
 ) {
 
 }
