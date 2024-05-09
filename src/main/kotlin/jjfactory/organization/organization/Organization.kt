@@ -14,11 +14,11 @@ class Organization(
     val id: Long? = null,
 
     val name: String,
-    val code: String,
 
     @CreationTimestamp
     val createdAt: LocalDateTime? = null,
     @UpdateTimestamp
     val updatedAt: LocalDateTime? = null,
 ) {
+
 }
