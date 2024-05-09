@@ -1,6 +1,7 @@
 package jjfactory.organization.organization.team
 
 interface TeamService {
+    fun getTeamsByOrganizationId(organizationId: Long): TeamDto.ListResponse
     fun deleteUserFromTeam(loginUserId: Long, userId: Long, teamId: Long)
     fun deleteTeam(loginUserId: Long, id: Long)
     fun addUsersToTeam(loginUserId: Long, requests: List<TeamDto.AddUserRequest>, teamId: Long)

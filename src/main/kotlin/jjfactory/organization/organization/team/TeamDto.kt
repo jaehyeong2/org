@@ -5,9 +5,8 @@ class TeamDto {
         val name: String,
         val parentId: Long,
         val leaderId: Long,
-        val organizationId: Long,
     ){
-        fun toEntity(): Team {
+        fun toEntity(organizationId: Long): Team {
             return Team(
                 leaderId = leaderId,
                 name = name,
@@ -23,5 +22,9 @@ class TeamDto {
     data class AddUserRequest(
         val userId: Long,
         val position: String
+    )
+
+    data class ListResponse(
+        val id: Long
     )
 }

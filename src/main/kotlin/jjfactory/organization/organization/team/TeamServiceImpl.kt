@@ -1,13 +1,11 @@
 package jjfactory.organization.organization.team
 
-import jjfactory.organization.exception.AccessDeniedException
-import jjfactory.organization.user.Role
+import jjfactory.organization.user.User
 import jjfactory.organization.user.UserRepository
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import kotlin.math.log
 
 @Transactional
 @Service
@@ -17,18 +15,24 @@ class TeamServiceImpl(
     private val teamUserRepository: TeamUserRepository
 ) : TeamService {
     override fun createTeam(loginUserId: Long, request: TeamDto.CreateRequest): Long {
-        validateAdminRole(loginUserId)
-        return teamRepository.save(request.toEntity()).id!!
+        val loginUser = validateAdminRole(loginUserId)
+        return teamRepository.save(request.toEntity(loginUser.organizationId)).id!!
     }
 
-    override fun deleteUserFromTeam(loginUserId: Long, userId: Long, teamId: Long){
+    override fun getTeamsByOrganizationId(organizationId: Long): TeamDto.ListResponse {
+        TODO("Not yet implemented")
+    }
+
+    override fun deleteUserFromTeam(loginUserId: Long, userId: Long, teamId: Long) {
         validateAdminRole(loginUserId)
         teamUserRepository.deleteByUserIdAndTeamId(userId, teamId)
     }
 
-    private fun validateAdminRole(loginUserId: Long) {
+    private fun validateAdminRole(loginUserId: Long): User {
         val loginUser = userRepository.findByIdOrNull(loginUserId) ?: throw NotFoundException()
-        if (loginUser.role != Role.ADMIN) throw AccessDeniedException()
+        loginUser.validateAdminRole()
+
+        return loginUser
     }
 
     override fun deleteTeam(loginUserId: Long, id: Long) {
@@ -37,14 +41,14 @@ class TeamServiceImpl(
         val team = teamRepository.findByIdOrNull(id) ?: throw NotFoundException()
         val teamUsers = teamUserRepository.findAllByTeamId(teamId = team.id!!)
 
-        if (teamUsers.isNotEmpty()){
+        if (teamUsers.isNotEmpty()) {
             throw IllegalArgumentException("조직원이 존재하는 팀은 삭제 불가")
         }
 
         teamRepository.deleteById(id)
     }
 
-    override fun addUsersToTeam(loginUserId: Long, requests: List<TeamDto.AddUserRequest>, teamId: Long){
+    override fun addUsersToTeam(loginUserId: Long, requests: List<TeamDto.AddUserRequest>, teamId: Long) {
         validateAdminRole(loginUserId)
 
         val team = teamRepository.findByIdOrNull(teamId) ?: throw NotFoundException()

@@ -78,7 +78,7 @@ class OrganizationServiceImpl(
         val organization = organizationRepository.findByIdOrNull(id) ?: throw NotFoundException()
 
         val teams = teamRepository.findAllByOrganizationId(organizationId = organization.id!!)
-        val users = userRepository.findAllByOrganizationIdAndActivatedIsTrue(organizationId = organization.id)
+        val users = userRepository.findAllByOrganizationIdAndIsActivatedIsTrue(organizationId = organization.id)
 
         if (teams.isNotEmpty() || users.isNotEmpty()) throw IllegalArgumentException("이미 활성화된 기업입니다.")
 
