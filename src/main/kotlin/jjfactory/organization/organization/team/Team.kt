@@ -15,6 +15,8 @@ class Team(
 
     var name: String,
     var parentId: Long? = null,
+
+    var leaderId: Long,
     val organizationId: Long,
 
     @CreationTimestamp

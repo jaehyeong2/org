@@ -4,10 +4,12 @@ class TeamDto {
     data class CreateRequest(
         val name: String,
         val parentId: Long,
+        val leaderId: Long,
         val organizationId: Long,
     ){
         fun toEntity(): Team {
             return Team(
+                leaderId = leaderId,
                 name = name,
                 organizationId = organizationId,
             )
