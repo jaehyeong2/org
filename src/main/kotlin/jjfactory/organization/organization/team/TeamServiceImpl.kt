@@ -19,8 +19,38 @@ class TeamServiceImpl(
         return teamRepository.save(request.toEntity(loginUser.organizationId)).id!!
     }
 
-    override fun getTeamsByOrganizationId(organizationId: Long): TeamDto.ListResponse {
-        TODO("Not yet implemented")
+    @Transactional(readOnly = true)
+    override fun getTeamsByOrganizationId(organizationId: Long): List<TeamDto.ListResponse> {
+        //todo 계층형
+        return teamRepository.findAllByOrganizationId(organizationId).map {
+            TeamDto.ListResponse(
+                id = it.id!!,
+                name = it.name,
+                parentId = it.parentId
+            )
+        }
+    }
+
+    @Transactional(readOnly = true)
+    override fun getDetail(id: Long): TeamDto.DetailResponse{
+        val team = teamRepository.findByIdOrNull(id) ?: throw NotFoundException()
+         val userIds = teamUserRepository.findAllByTeamId(teamId = team.id!!).map {
+             it.userId
+         }
+
+        //todo 성능개선
+        val users= userRepository.findAllByIdInAndIsActivatedIsTrue(userIds).map {
+            TeamDto.UserContainer(
+                id = it.id!!,
+                name = it.fullName
+            )
+        }
+
+        return TeamDto.DetailResponse(
+            id = team.id,
+            name = team.name,
+            users = users
+        )
     }
 
     override fun deleteUserFromTeam(loginUserId: Long, userId: Long, teamId: Long) {

@@ -3,13 +3,14 @@ package jjfactory.organization.organization.team
 class TeamDto {
     data class CreateRequest(
         val name: String,
-        val parentId: Long,
+        val parentId: Long?,
         val leaderId: Long,
     ){
         fun toEntity(organizationId: Long): Team {
             return Team(
                 leaderId = leaderId,
                 name = name,
+                parentId = parentId,
                 organizationId = organizationId,
             )
         }
@@ -25,6 +26,19 @@ class TeamDto {
     )
 
     data class ListResponse(
-        val id: Long
+        val id: Long,
+        val name: String,
+        val parentId: Long?,
+    )
+
+    data class DetailResponse(
+        val id: Long,
+        val name: String,
+        val users: List<UserContainer> = ArrayList()
+    )
+
+    data class UserContainer(
+        val id: Long,
+        val name: String
     )
 }
