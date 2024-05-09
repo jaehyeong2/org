@@ -1,20 +1,34 @@
 package jjfactory.organization.feedback
 
 import jjfactory.organization.exception.AccessDeniedException
+import jjfactory.organization.notification.Notification
+import jjfactory.organization.notification.NotificationRepository
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import kotlin.math.log
 
 @Service
 @Transactional
 class FeedbackServiceImpl(
     private val feedbackRepository: FeedbackRepository,
     private val feedbackCommentRepository: FeedbackCommentRepository,
-    private val feedbackLikeRepository: FeedbackLikeRepository
+    private val feedbackLikeRepository: FeedbackLikeRepository,
+    private val notificationRepository: NotificationRepository
 ) : FeedbackService {
     override fun create(loginUserId: Long, request: FeedbackDto.Create): Long {
         val initEntity = request.toEntity(loginUserId)
+
+        //todo 이벤트 기반으로 변경하기
+        val initNotification = Notification(
+            userId = request.receiveUserId,
+            sourceUserId = loginUserId,
+            type = "FEEDBACK_SEND"
+        )
+
+        notificationRepository.save(initNotification)
+
         return feedbackRepository.save(initEntity).id!!
     }
 
