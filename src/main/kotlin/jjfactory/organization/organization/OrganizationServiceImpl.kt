@@ -1,6 +1,8 @@
 package jjfactory.organization.organization
 
 import jjfactory.organization.external.MailSender
+import jjfactory.organization.organization.invite.OrganizationInviteLog
+import jjfactory.organization.organization.invite.OrganizationInviteLogRepository
 import jjfactory.organization.organization.team.TeamRepository
 import jjfactory.organization.user.User
 import jjfactory.organization.user.UserRepository
@@ -14,6 +16,7 @@ import java.util.*
 @Service
 class OrganizationServiceImpl(
     private val organizationRepository: OrganizationRepository,
+    private val inviteLogRepository: OrganizationInviteLogRepository,
     private val teamRepository: TeamRepository,
     private val userRepository: UserRepository,
     private val mailSender: MailSender
@@ -54,7 +57,17 @@ class OrganizationServiceImpl(
         return token
     }
 
-    override fun sendInviteMailToUser(request: OrganizationDto.InviteMailRequest) {
+    override fun sendInviteMailToUser(loginUserId: Long, request: OrganizationDto.InviteMailRequest) {
+        val loginUser = validateAdminRole(loginUserId)
+
+        val initLog = OrganizationInviteLog(
+            organizationId = loginUser.organizationId,
+            email = request.email,
+            role = request.role
+        )
+
+        inviteLogRepository.save(initLog)
+
         mailSender.sendInviteMail(
             email = request.email,
             role = request.role.toString()
@@ -72,8 +85,10 @@ class OrganizationServiceImpl(
         organizationRepository.delete(organization)
     }
 
-    private fun validateAdminRole(loginUserId: Long) {
+    private fun validateAdminRole(loginUserId: Long): User {
         val loginUser = userRepository.findByIdOrNull(loginUserId) ?: throw NotFoundException()
         loginUser.validateAdminRole()
+
+        return loginUser
     }
 }
